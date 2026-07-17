@@ -1,0 +1,17 @@
+Artificial Intelligence (AI) is a branch of computer science that focuses on building systems capable of performing tasks that normally require human intelligence. These tasks include learning from data, recognizing patterns, understanding language, solving problems, and making decisions.
+
+Machine Learning is a subset of AI that enables computers to learn from examples instead of being explicitly programmed. A machine learning model is trained using data, identifies patterns, and uses those patterns to make predictions on new data.
+
+Deep Learning is a specialized area of machine learning that uses neural networks with many layers. Deep learning has achieved remarkable success in image recognition, speech recognition, machine translation, and natural language processing.
+
+Natural Language Processing (NLP) is the field of AI that allows computers to understand and generate human language. Modern language models can summarize documents, answer questions, translate text, write code, and assist users in many different tasks.
+
+Embeddings are numerical representations of text. Similar pieces of text have similar embedding vectors, making it possible to perform semantic search instead of simple keyword matching. Embeddings are commonly stored in vector databases.
+
+A vector database stores embedding vectors and enables efficient similarity search. Popular vector databases include FAISS, Chroma, Pinecone, and Weaviate. FAISS is an open-source library developed by Meta that performs fast similarity search on dense vectors.
+
+Retrieval-Augmented Generation (RAG) combines information retrieval with large language models. Instead of relying only on the model's internal knowledge, a RAG system first retrieves relevant document chunks and then provides them as context to the language model. This approach improves factual accuracy and allows the model to answer questions about private or domain-specific documents.
+
+A typical RAG pipeline consists of several steps. First, documents are loaded. Next, they are split into smaller chunks. Each chunk is converted into embeddings using an embedding model. The embeddings are stored in a vector database such as FAISS. When a user asks a question, the system converts the query into an embedding, retrieves the most similar chunks, and sends them to a language model to generate an answer.
+
+The main topic of this document is Retrieval-Augmented Generation (RAG), including document loading, text splitting, embeddings, vector databases, semantic search, and question answering using large language models.
