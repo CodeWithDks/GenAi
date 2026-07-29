@@ -1,8 +1,5 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import SimpleJsonOutputParser
 from dotenv import load_dotenv
 
 load_dotenv()
