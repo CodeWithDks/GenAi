@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Vector store artifacts (generated, not source)
+*.faiss
+*.pkl
+chroma.sqlite3
+Retriever/*/
+!Retriever/based_on_document_search/
+!Retriever/based_on_retrievers/
+
+# Large source PDFs used only for local demos
+Vector_Store/*.pdf
