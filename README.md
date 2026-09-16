@@ -1,131 +1,80 @@
-# 🚀 Learning Generative AI using LangChain
+# 🚀 GenAi — Learning Generative AI with LangChain & LangGraph
 
-This repository is my hands-on learning journey into **Generative AI** with **LangChain**. It's a collection of small, focused scripts — each one exploring a single LangChain concept — rather than one big application. Together they build up to the core skills needed to build real LLM-powered apps: chatbots, document Q&A, RAG pipelines, agents with tools, and structured-output extraction.
-
----
-
-## 📚 Topics Covered
-
-- Chat models (OpenAI & Gemini)
-- Prompt templates & chat prompt templates
-- Message history / `MessagesPlaceholder`
-- Chains — simple, sequential, parallel, conditional (`RunnableBranch`)
-- The custom Runnable interface (building LangChain's `Runnable` pattern from scratch)
-- Document loaders (Text, CSV, PDF, Web)
-- Text splitters (character-based & recursive/structure-based)
-- Structured output (`TypedDict`, Pydantic, `with_structured_output`)
-- Vector stores (FAISS, Chroma)
-- Retrievers (similarity, MMR, multi-query, contextual compression, Wikipedia)
-- Retrieval-Augmented Generation (RAG) with `RetrievalQA`
-- Tools — `@tool`, `StructuredTool`, `BaseTool`, and toolkits
-- Tool calling with an LLM (`bind_tools`)
-- Built-in tools (DuckDuckGo search, Shell)
-- Streamlit mini-apps (Gemini chatbot, AI website builder)
+A structured, hands-on learning repository covering **LangChain**
+fundamentals through **LangGraph** agent workflows. Each folder is one
+concept, numbered in the order it makes sense to learn — this isn't one
+big application, it's a growing set of focused, working examples that
+build on each other.
 
 ---
 
-## 📂 Project Structure
+## 📂 Repository Structure
 
 ```
 .
-├── Chains/                          # Simple, sequential, parallel & conditional chains
-│   ├── simple_chain.py
-│   ├── sequential_chain.py
-│   ├── parallel_chain.py
-│   ├── conditional_chain.py
-│   └── Text.txt
+├── LangChain/          # Fundamentals — models, prompts, chains, RAG, tools
+│   ├── 01_Models
+│   ├── 02_Prompts
+│   ├── 03_Runnables
+│   ├── 04_Chains
+│   ├── 05_Structured_Output
+│   ├── 06_Document_Loaders
+│   ├── 07_Text_Splitters
+│   ├── 08_Vector_Store
+│   ├── 09_Retriever
+│   ├── 10_Tools
+│   ├── 11_Tool_Calling
+│   └── README.md
 │
-├── Documents_Loader/                 # Loading docs: text, CSV, PDF, web pages
-│   ├── simple-text.py
-│   ├── doc-csv.py
-│   ├── doc-pdf.py
-│   └── web-scrip.py
+├── LangGraph/           # Stateful agent workflows, built on LangChain
+│   ├── 01_Sequential_Workflows
+│   ├── 02_Conditional_Workflows
+│   ├── 03_Parallel_Workflows
+│   ├── 04_Iterative
+│   ├── 05_Tool_Calling
+│   ├── 06_Subgraphs
+│   ├── 07_Middleware
+│   ├── 08_HITL
+│   ├── 09_Memory_Persistence
+│   ├── 10_Multiagent
+│   ├── 11_Orchestrator
+│   └── README.md
 │
-├── Models/
-│   └── ChatModels/                   # Chat model examples
-│       ├── openai-chatbot.py
-│       └── gemini-chatbot.py         # Streamlit chatbot using Gemini
-│
-├── Prompts/                          # Prompt templates & message handling
-│   ├── message.py
-│   ├── chatbot.py                    # CLI chatbot with running chat history
-│   ├── chat_prompt_template.py
-│   ├── message_placeholder.py
-│   └── website.py                    # Streamlit "AI Website Builder"
-│
-├── Retriever/
-│   ├── based_on_document_search/
-│   │   ├── vector_store_retriever.py
-│   │   └── wikipedia_retriever.py
-│   └── based_on_retrievers/
-│       ├── mmr.py                          # Max Marginal Relevance retriever
-│       ├── multi_query_retriever.py
-│       └── contextual_compression_retriever.py
-│
-├── Runnables/                        # Hand-built Runnable/Chain/PromptTemplate/LLM,
-│   ├── dummy_prompt.py               # to understand what LangChain does internally
-│   ├── dummy_llms.py
-│   ├── dummy_chain.py
-│   ├── app.py
-│   ├── pdf_reader.py                 # RetrievalQA over a PDF using FAISS
-│   └── simple.txt
-│
-├── Structured_Output/                # Getting structured data out of an LLM
-│   ├── pydantic_demo.py              # Plain Pydantic model validation (no LLM)
-│   ├── typeddict_output.py           # with_structured_output + TypedDict
-│   └── pytandict_output.py           # with_structured_output + Pydantic
-│
-├── Text_Spliter/                     # Splitting documents into chunks
-│   ├── lenght_based.py               # CharacterTextSplitter
-│   ├── text_structured_based.py      # RecursiveCharacterTextSplitter
-│   └── docs-text-splitter.py         # Splitting a loaded PDF
-│
-├── Tool-Calling/
-│   └── first_tool_calling.py         # bind_tools + manual tool execution loop
-│
-├── Tools/
-│   ├── custom_tools/
-│   │   ├── my_first_custom_tool.py   # @tool decorator basics
-│   │   ├── using_basetool.py         # BaseTool subclass
-│   │   └── using_pydatic_tool.py     # StructuredTool.from_function
-│   ├── Built_in_tools/
-│   │   ├── duckduckgo_search_tool.py
-│   │   └── shell_tool.py
-│   └── Toolkit/
-│       └── custom_toolkit.py         # Grouping tools into a toolkit
-│
-├── Vector_Store/                     # Embeddings + vector databases
-│   ├── vectore_store_faiss.py
-│   └── vectore_store_chroma.py
-│
+├── LICENSE
 ├── .gitignore
 └── README.md
 ```
 
----
+Each section has its own README with the full folder-by-folder breakdown
+and the reasoning behind the order:
 
-## 📖 Folder Guide
+- 📘 **[`LangChain/README.md`](./LangChain/README.md)** — models → prompts
+  → the Runnable abstraction → chains → structured output → documents →
+  splitting → vector stores → retrieval → tools → tool calling
+- 📗 **[`LangGraph/README.md`](./LangGraph/README.md)** — sequential →
+  conditional → parallel → iterative workflows → tool calling in a graph
+  → subgraphs → middleware → human-in-the-loop → memory → multi-agent →
+  orchestration
 
-| Folder                  | What it covers                                                            |
-| ------------------------ | -------------------------------------------------------------------------- |
-| `Chains`                 | Composing `prompt \| model \| parser` pipelines — simple, sequential, parallel (`RunnableParallel`), and conditional (`RunnableBranch`) |
-| `Documents_Loader`       | Loading raw content into LangChain `Document` objects from `.txt`, `.csv`, `.pdf`, and web pages |
-| `Models/ChatModels`      | Talking to chat models directly — OpenAI and Google Gemini, including a Streamlit chatbot UI |
-| `Prompts`                | `PromptTemplate`, `ChatPromptTemplate`, message types (`SystemMessage`/`HumanMessage`/`AIMessage`), and `MessagesPlaceholder` for chat history |
-| `Retriever`              | Turning vector stores into retrievers — similarity search, MMR, multi-query, contextual compression, and Wikipedia as a retriever |
-| `Runnables`              | A from-scratch mini implementation of a prompt template, LLM wrapper, and chain — for understanding what LangChain's `Runnable`/LCEL abstraction is really doing under the hood; also includes a full RAG example over a PDF |
-| `Structured_Output`      | Getting typed/structured data back from an LLM using `TypedDict` and Pydantic with `with_structured_output` |
-| `Text_Spliter`           | Breaking large documents into chunks with `CharacterTextSplitter` and `RecursiveCharacterTextSplitter` |
-| `Tool-Calling`           | Binding tools to a chat model with `bind_tools` and manually running the tool-call → `ToolMessage` → final-answer loop |
-| `Tools`                  | Three ways to define a tool (`@tool`, `StructuredTool`, `BaseTool`), plus built-in tools (DuckDuckGo, Shell) and grouping tools into a toolkit |
-| `Vector_Store`           | Creating embeddings and storing them in FAISS and Chroma for semantic search |
+## 🧠 Why two sections
+
+**LangChain** covers the fundamentals: talking to a model, structuring
+prompts, chaining calls together, grounding responses in real documents,
+and giving a model tools. **LangGraph** takes those same building blocks
+and orchestrates them into *stateful graphs* — workflows that can branch,
+loop, pause for human approval, persist memory across sessions, and
+coordinate multiple agents. Learning them in this order means every
+LangGraph example builds on a LangChain concept already covered, instead
+of introducing everything at once.
 
 ---
 
 ## 🛠 Technologies Used
 
 - Python
-- [LangChain](https://python.langchain.com/) (`langchain-core`, `langchain-community`, `langchain-classic`, `langchain-text-splitters`)
+- [LangChain](https://python.langchain.com/) (`langchain-core`,
+  `langchain-community`, `langchain-classic`, `langchain-text-splitters`)
+- [LangGraph](https://langchain-ai.github.io/langgraph/)
 - OpenAI (`langchain-openai`)
 - Google Gemini (`langchain-google-genai`)
 - FAISS (`langchain-community` vector store)
@@ -138,14 +87,14 @@ This repository is my hands-on learning journey into **Generative AI** with **La
 
 ## ⚙ Installation
 
-Clone the repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/CodeWithDks/GenAi.git
 cd GenAi
 ```
 
-Create a virtual environment
+Create a virtual environment:
 
 **Windows**
 ```bash
@@ -159,16 +108,18 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-Install the core dependencies used across these scripts:
+Install the core dependencies used across these examples:
 
 ```bash
 pip install langchain langchain-openai langchain-community langchain-classic \
             langchain-google-genai langchain-chroma langchain-text-splitters \
-            chromadb faiss-cpu pydantic python-dotenv streamlit \
+            langgraph chromadb faiss-cpu pydantic python-dotenv streamlit \
             pypdf duckduckgo-search
 ```
 
-> 💡 A pinned `requirements.txt` isn't checked into the repo yet — install the packages above, or generate one with `pip freeze > requirements.txt` once your environment is set up.
+> 💡 A pinned `requirements.txt` isn't checked into the repo yet — install
+> the packages above, or generate one with `pip freeze > requirements.txt`
+> once your environment is set up.
 
 ---
 
@@ -181,49 +132,55 @@ OPENAI_API_KEY=your_openai_api_key_here
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
-`OPENAI_API_KEY` is required for most scripts (chat models, embeddings, structured output). `GOOGLE_API_KEY` is only needed for `Models/ChatModels/gemini-chatbot.py`.
+`OPENAI_API_KEY` is required for most examples across both `LangChain/`
+and `LangGraph/`. `GOOGLE_API_KEY` is only needed for
+`LangChain/01_Models/gemini-chatbot.py`.
 
-> ⚠️ Several scripts currently use hardcoded Windows file paths (e.g. `D:\Gen Ai\...`). Update these to relative paths or your own local paths before running them.
+Some `LangGraph/` notebooks may need their own local `.env` in the same
+folder — check that subfolder's README where one exists.
 
 ---
 
 ## ▶ Running Examples
 
-Run any standalone script directly:
+Run any standalone LangChain script directly:
 
 ```bash
-python Chains/simple_chain.py
-python Retriever/based_on_retrievers/mmr.py
-python Tool-Calling/first_tool_calling.py
+python LangChain/04_Chains/simple_chain.py
+python LangChain/09_Retriever/based_on_retrievers/mmr.py
+python LangChain/11_Tool_Calling/first_tool_calling.py
 ```
 
 Run the Streamlit apps:
 
 ```bash
-streamlit run Prompts/website.py
-streamlit run Models/ChatModels/gemini-chatbot.py
+streamlit run LangChain/02_Prompts/website.py
+streamlit run LangChain/01_Models/gemini-chatbot.py
+```
+
+Open any LangGraph notebook in Jupyter:
+
+```bash
+jupyter notebook LangGraph/10_Multiagent/multiagent-content-team.ipynb
 ```
 
 ---
 
 ## 🎯 Learning Roadmap
 
-- [x] LangChain installation & basics
-- [x] Prompt templates & message types
-- [x] A hand-built Runnable/Chain (understanding LCEL internals)
-- [x] Chains (simple, sequential, parallel, conditional)
-- [x] Document loaders & text splitters
-- [x] Structured output (TypedDict & Pydantic)
-- [x] Vector stores (FAISS, Chroma)
-- [x] Retrievers (similarity, MMR, multi-query, contextual compression)
-- [x] Retrieval-Augmented Generation (RAG)
-- [x] Tools & toolkits
-- [x] Tool calling with LLMs
-- [ ] Memory
-- [ ] Agents
-- [ ] LangGraph
-- [ ] Multi-agent systems
-- [ ] End-to-end AI projects
+- [x] LangChain fundamentals — models, prompts, Runnables, chains
+- [x] Structured output, document loaders, text splitters
+- [x] Vector stores & retrievers
+- [x] Tools & tool calling
+- [x] LangGraph — sequential, conditional, parallel & iterative workflows
+- [x] LangGraph tool calling
+- [x] Subgraphs & middleware
+- [x] Human-in-the-loop (HITL)
+- [x] Memory & persistence
+- [x] Multi-agent systems & orchestration
+- [ ] Model Context Protocol (MCP) — see my separate
+      [`mcp`](https://github.com/CodeWithDks/mcp) repo
+- [ ] End-to-end, production-style AI projects
 
 ---
 
@@ -231,29 +188,39 @@ streamlit run Models/ChatModels/gemini-chatbot.py
 
 This repository exists to:
 
-- Learn LangChain from the ground up, one concept at a time
-- Practice core Generative AI building blocks before combining them into full apps
-- Keep reusable, well-commented reference code for future projects
-- Track learning progress toward building production-ready AI applications
+- Learn LangChain and LangGraph from the ground up, one concept at a time
+- Practice core Generative AI building blocks before combining them into
+  full applications
+- Keep reusable, well-documented reference code for future projects
+- Track learning progress toward building production-ready AI systems
 
 ---
 
 ## 🤝 Contributions
 
-This is primarily a personal learning repository, but suggestions and improvements are always welcome — feel free to open an issue or PR.
+This is primarily a personal learning repository, but suggestions and
+improvements are always welcome — feel free to open an issue or PR.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
 ## ⭐ Acknowledgements
 
 - [LangChain Documentation](https://python.langchain.com/)
+- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
 - OpenAI
 - Google Gemini
 - FAISS & Chroma
 - Python community
+
+---
+
+## 👨‍💻 Author
+
+Built by [Deepak Kumar Singh](https://github.com/CodeWithDks) as a
+hands-on Generative AI learning project.
