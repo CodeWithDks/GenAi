@@ -1,146 +1,91 @@
-Here is a complete, well-structured **`README.md`** file for your **`llm-long-term-memory`** project, following standard open-source documentation practices.
+# Long-Term Memory — AI Fitness & Health Coach
 
-```markdown
-# 🧠 LLM Long-Term Memory with LangGraph
+A multi-agent LangGraph workflow demonstrating **long-term, cross-session
+memory** — an AI fitness coach that remembers a user's injuries, dietary
+restrictions, and goals across separate conversations, without the user
+ever having to repeat them.
 
-A production-ready, multi-agent framework demonstrating **long-term memory persistence, CRUD operations, and constraint-aware decision making** using **LangGraph** and **LangChain**.
+## How this differs from `../09_Memory_Persistence`
 
-This project showcases how an AI assistant can recall user preferences, physical limitations, dietary restrictions, or learning goals across independent conversational sessions without needing them repeated in prompt inputs.
+`09_Memory_Persistence` covers LangGraph's **checkpointer** — memory of
+*this specific conversation's* message history, so an agent doesn't
+forget what was just said. This notebook covers something different:
+LangGraph's **`InMemoryStore`**, a namespaced key-value store for facts
+that should persist *across* sessions entirely — a user's fitness profile
+doesn't belong to any one conversation; it should be available the next
+time they show up, days later, with no memory of the earlier chat baked
+into a message history at all.
 
----
+## What it demonstrates
 
-## 📸 Key Architecture
+**1. Memory extraction** — `extract_fitness_memory()` reads a user
+message and pulls out only the facts worth remembering long-term
+(injuries, dietary restrictions, goals, equipment/training preferences),
+returning `NONE` if there's nothing persistent to store.
 
+**2. Memory storage & retrieval** — facts are saved into `InMemoryStore`
+under a per-user namespace (`(user_id, "fitness_profile")`) and retrieved
+with `get_fitness_profile()` / `build_fitness_context()` — the same
+pattern a real app would use, just with an in-memory store standing in
+for a persistent one.
 
-```
+**3. A supervisor-routed multi-agent workflow** (the same pattern as
+[`../10_Multiagent`](../10_Multiagent)) built on top of that memory:
 
-User Input (New Session)
-│
-▼
-┌──────────────────┐
-│ Memory Extraction│ ──► Extracts persistent facts (Injuries, Goals, Diet, etc.)
-└─────────┬────────┘
-│
-▼
-┌──────────────────┐
-│ Long-Term Store  │ ──► Saves / Updates / Retrieves user profile namespace
-└─────────┬────────┘
-│
-▼
-┌──────────────────┐
-│ Multi-Agent Graph│ ──► Planner + Safety Reviewer enforce memory constraints
-└─────────┬────────┘
-│
-▼
-Personalized Output (Constraint-Compliant)
+- **`supervisor`** — decides what runs next based on current state,
+  using structured output (`SupervisorDecision`) rather than parsing text
+- **`fitness_planner_agent`** — drafts a workout/meal plan, given the
+  user's request *and* their stored long-term profile
+- **`safety_reviewer_agent`** — checks the draft against the stored
+  constraints (does it actually avoid the user's bad knee? is it
+  actually dairy-free?) and returns `APPROVED` or `NEEDS_REVISION`
+- **`final_agent`** — polishes the approved plan into the final response
 
-```
+**4. The same safety guardrails as `10_Multiagent`** — `MAX_REVISIONS = 3`
+hard-stops the planner/reviewer loop regardless of what the supervisor's
+LLM call would otherwise decide, plus an independent `recursion_limit: 8`
+at the graph level as a second circuit breaker.
 
----
+## The example walkthrough
 
-## ✨ Key Features
+The notebook's demo cell simulates two *prior* sessions storing memory,
+then a *new* session that never repeats that context:
 
-- **Automated Memory Extraction:** Dynamically parses incoming conversational turns to extract long-term facts using Pydantic structured output.
-- **Full Memory CRUD Operations:** Supports **C**reate, **R**ead, **U**pdate, and **D**elete for persistent state keys using `InMemoryStore`.
-- **Multi-Agent Supervisor Pattern:** Routes workflow execution across specialized worker agents (`planner`, `safety_reviewer`, `final`).
-- **Safety Boundaries & Circuit Breakers:** Bounded loop iterations (`MAX_REVISIONS = 3`) and recursion limit guards to eliminate infinite agent revision loops.
-- **Cross-Session Persistence Simulation:** Retrieves namespace facts dynamically even when the user query contains zero explicit context.
+1. **Session 1:** *"I broke my right knee last year and cannot do heavy
+   barbell squats or jumping exercises."* → stored.
+2. **Session 2:** *"I recently went strict lactose-free vegan and want
+   high protein meals."* → stored.
+3. **Session 3 (new conversation):** *"Give me a quick 20-minute leg
+   workout and a post-workout recovery snack."* — no mention of the knee
+   or the diet.
 
----
+The agent pulls both stored facts from memory and produces a plan that
+automatically avoids barbell squats/jumping (low-impact alternatives
+instead) and avoids dairy/animal products in the snack suggestion — all
+without the user restating either constraint.
 
-## 🛠️ Real-World Example: AI Fitness & Health Coach ("Coach Flex")
-
-In the provided implementation, the system acts as a personalized fitness coach:
-
-1. **Session 1 (Stored Memory):** User reveals they have a **broken right knee** (cannot squat/jump) and follow a **strict lactose-free vegan diet**.
-2. **Session 2 (New Request):** User asks: *"Give me a quick 20-minute leg workout and a post-workout recovery snack."*
-3. **Execution Outcome:**
-   - **Leg Workout:** Automatically excludes barbell squats and jumping plyometrics, selecting low-impact exercises (*Wall Sits*, *Glute Bridges*, *Seated Leg Extensions*).
-   - **Recovery Snack:** Excludes dairy and animal products, proposing high-protein vegan options (*Chickpea Salad*, *Pea Protein Smoothie*, *Edamame*).
-
----
-
-## 📂 Repository Structure
-
-
-```
-
-llm-long-term-memory/
-│
-├── learning_assistant.ipynb   # Complete step-by-step Jupyter Notebook
-├── README.md                  # Project documentation
-├── .env.example               # Environment variables template
-└── requirements.txt           # Python dependencies
-
-```
-
----
-
-## 🚀 Quick Start
-
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/YOUR-USERNAME/llm-long-term-memory.git](https://github.com/YOUR-USERNAME/llm-long-term-memory.git)
-cd llm-long-term-memory
-
-```
-
-### 2. Set Up Virtual Environment & Dependencies
+## Running it
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-pip install -r requirements.txt
-
+pip install langchain-openai langgraph langchain-core pydantic python-dotenv
 ```
 
-### 3. Configure Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-OPENAI_API_KEY=your_openai_api_key_here
+Create a `.env` file in this folder:
 
 ```
-
-### 4. Run the Notebook
-
-Launch Jupyter Notebook and execute `learning_assistant.ipynb`:
-
-```bash
-jupyter notebook learning_assistant.ipynb
-
+OPENAI_API_KEY=your_key_here
 ```
 
----
+Then run the notebook cell by cell. The final cell streams each node's
+execution (`--- Executed Node: supervisor ---`, etc.) so you can watch
+the supervisor route between planner and reviewer before producing the
+final, memory-compliant plan.
 
-## 📦 Required Dependencies (`requirements.txt`)
+## Note on `InMemoryStore`
 
-```text
-langchain-openai>=0.1.0
-langgraph>=0.2.0
-langchain-core>=0.2.0
-pydantic>=2.0.0
-python-dotenv>=1.0.0
-
-```
-
----
-
-## 🔒 Safety & Production Controls
-
-| Feature | Implementation | Purpose |
-| --- | --- | --- |
-| **Revision Safety Limit** | `MAX_REVISIONS = 3` | Prevents endless loop execution between reviewer and planner agents. |
-| **Token Capping** | `max_tokens = 500` | Limits generation length, reduces API costs, and accelerates responses. |
-| **Recursion Circuit Breaker** | `config={"recursion_limit": 8}` | LangGraph graph-level execution protection against unforeseen state locks. |
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE&utm_source=gemini) file for details.
-
-```
-
-```
+As the name says, this store is in-memory — it resets when the notebook
+process ends. That's the right choice for demonstrating the *pattern*;
+a real application would swap it for a persistent backend (LangGraph
+supports Postgres-backed stores, for instance) without changing anything
+about how the agents read or write memory — the store's interface stays
+the same either way.
