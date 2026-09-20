@@ -1,4 +1,7 @@
 multiplicand = int(input())
 muliplier = int(input())
-product = multiplicand / muliplier
-print(product)
+if muliplier == 0:
+    print("Cannot divide by zero")
+else:
+    product = multiplicand / muliplier
+    print(product)
