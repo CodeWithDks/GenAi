@@ -246,3 +246,9 @@ LangChain/09_Retriever/*/
 
 # Large source PDFs used only for local demos
 LangChain/08_Vector_Store/*.pdf
+# Chroma / FAISS Vector Store local storage directories
+capstone_kb/
+chroma_support_kb/
+*.sqlite3
+*.bin
+*.index
