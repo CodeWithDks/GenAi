@@ -19,14 +19,16 @@ retrieval quality as much as the embedding model choice, 400–512 tokens with 1
 practical default, and Anthropic's own contextual retrieval research found a 49% reduction in
 retrieval failures (67% combined with reranking) from prepending a short context sentence to each
 chunk before embedding it. The capstone doesn't just cite that last number — it implements a small
-version of the technique and reproduces the effect on six chunks with cosine similarity, the same
-measurement from `01_Models/02_embedding_models.ipynb`.
+version of the technique and lets you compare raw vs. contextualized chunks on six examples with cosine
+similarity, the same measurement from `01_Models/02_embedding_models.ipynb`. That is a toy demonstration, not a
+reproduction of the reported figure, and its Groq and Hugging Face cells were not executed when the notebook was built.
 
 ## A second sunset notice
 
 `langchain_experimental` — home to `SemanticChunker`, used in Section 5 — is **also** sunset and
-unmaintained, same situation as `langchain-community` in the previous folder. It still works (tested
-against `langchain-experimental==0.3.4`), and semantic chunking is a concept worth knowing regardless
+unmaintained, same situation as `langchain-community` in the previous folder. It still imports fine (the import was checked against `langchain-experimental==0.4.2`; the
+semantic-chunking cell itself needs a Hugging Face model download that the build sandbox couldn't
+reach, so that cell was not executed), and semantic chunking is a concept worth knowing regardless
 of which package eventually implements it. Treat Section 5 as a concept you understand, not a
 dependency to build production code on without checking its status first.
 
@@ -60,7 +62,7 @@ Same as earlier folders — see the [repo root README](../README.md). New for th
 
 ```bash
 pip install langchain-text-splitters tiktoken
-pip install "langchain-experimental==0.3.4"   # optional — Section 5 only, see the sunset note above
+pip install "langchain-experimental==0.4.2"   # optional — Section 5 only, see the sunset note above
 ```
 
 ## Running
