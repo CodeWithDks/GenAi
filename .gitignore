@@ -252,3 +252,4 @@ chroma_support_kb/
 *.sqlite3
 *.bin
 *.index
+10_RAG_Project/rag_project_kb/
