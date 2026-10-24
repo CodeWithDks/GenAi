@@ -1,5 +1,0 @@
-Account & Security
-
-To reset your password, choose 'Forgot password' on the sign-in page and follow the emailed link.
-Two-factor authentication codes are sent by SMS and may take up to 2 minutes to arrive. You can
-change your account email from Settings > Profile > Email Address at any time.

@@ -253,3 +253,8 @@ chroma_support_kb/
 *.bin
 *.index
 10_RAG_Project/rag_project_kb/
+
+sample_docs/
+study_guide.md
+*_kb/
+.DS_Store
